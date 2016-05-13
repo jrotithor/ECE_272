@@ -1,0 +1,36 @@
+module Clock_source(
+	input reset_n,
+	LB, RB,
+	
+	
+	output Len, Ldir, Ren, Rdir
+		);
+		
+		wire clk;		
+		wire clk_5;		
+			
+			
+		
+		OSCH #("2.08") osc_int (					
+			.STDBY(1'b0),										.OSC(clk),											.SEDSTDBY());									
+		
+		
+		Clock_Counter counter_1(
+			.clk_i(clk),
+			.reset_n(reset_n),
+			.clk_o(clk_5)); 
+			
+		
+		State_Machine FSM_1(
+			.LB(LB),
+			.RB(RB),
+			.clk_i(clk_5),
+			.reset_n(reset_n),
+			.Len(Len),
+			.Ldir(Ldir),
+			.Ren(Ren),
+			.Rdir(Rdir)
+			);
+		
+		
+endmodule

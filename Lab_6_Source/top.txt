@@ -1,0 +1,77 @@
+module Top(
+
+	
+	input reset_n,	
+	input [7:0] v_in,
+	//input [7:0] d_in,
+		output CS_n,
+		output RD_n,
+		output WR_n,
+		output dp,
+		output [2:0] op_1,
+		output [6:0] segs
+	//	output [7:0] led 
+	 
+	);
+	wire [3:0] Z_1;
+	wire [3:0] Z_2;
+	wire [3:0] Z_3;
+	wire [3:0] Z_4;
+	
+	wire [3:0] z;
+	OSCH #("2.08") osc_int (					//"2.08" specifies the operating frequency, 2.08 MHz. Other clock frequencies can be found in the MachX02's documentation
+		.STDBY(1'b0),							//Specifies active state
+		.OSC(clk_i),								//Outputs clock signal to 'clk' net
+		.SEDSTDBY());
+		
+Clk_ctr c(.clk_i(clk_i),
+		.reset_n(reset_n),
+		.clk_o(clk_o));
+
+	/*
+		assign led[0] = d_in[0];
+		assign led[1] = d_in[1];
+		assign led[2] = d_in[2];
+		assign led[3] = d_in[3];
+		assign led[4] = d_in[4];
+		assign led[5] = d_in[5];
+		assign led[6] = d_in[6];
+		assign led[7] = d_in[7];
+
+	*/
+	new_clock n2(.clk_z(clk_i),
+	.new_clk(new_clk));
+Voltage_splitter v1(.d(v_in),
+.clk_i(new_clk),
+.d_0(Z_1),
+.d_1(Z_2),
+.d_2(Z_3),
+.d_3(Z_4));
+ADC a(.reset_n(reset_n),
+.clk_i(clk_i),
+.CS_n(CS_n),
+.RD_n(RD_n),
+.WR_n(WR_n));
+ 
+
+
+State_machine_l6 s1(.reset_n(reset_n),
+.clk_i(clk_o),
+.dp(dp),
+.op_1(op_1));
+
+mux m1(.sel_0(Z_1),
+.sel_1(Z_2), 
+.sel_2(Z_3),
+.sel_3(Z_4),
+.Sel(op_1),
+.out(z));
+
+board_display b1(
+.data(z),
+.segs(segs));
+
+
+		
+
+endmodule

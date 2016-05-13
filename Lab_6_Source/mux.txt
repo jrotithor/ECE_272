@@ -1,0 +1,28 @@
+module mux(
+input [3:0] sel_0, input [3:0] sel_1,
+input [3:0] sel_2,
+input [3:0] sel_3, input [2:0] Sel,
+output reg [3:0] out
+);
+   
+ always@(*)
+	 begin: mux
+		
+	//out = Sel[1]?(Sel[0]? sel_3:sel_2):
+		//			(Sel[0]? sel_1:sel_0);    
+		//			end
+	if(Sel[2])
+		out = sel_0;
+	else if(Sel[1])
+		out = sel_1;
+	else 
+		begin
+		if(Sel[0])
+			out = sel_2;
+		else
+			out = sel_3;
+		end
+		end
+endmodule
+  
+

@@ -1,0 +1,15 @@
+module new_clock(
+input clk_z,
+output reg new_clk);
+reg[18:0] counter;
+always @(posedge clk_z)
+	begin
+	counter <= counter + 19'd1;
+	case(counter)
+		19'd524287: new_clk = 1'd1;
+		default:	new_clk = 0;
+		endcase
+		end
+		endmodule
+
+

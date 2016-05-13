@@ -1,0 +1,26 @@
+module Voltage_splitter(input [7:0] d,
+input clk_i,
+output reg [3:0] d_0, 
+output reg [3:0] d_1,
+output reg [3:0] d_2,
+output reg [3:0] d_3);
+
+reg [12:0] new_voltage;  
+
+always @(clk_i)
+	begin
+//new_voltage = (d*5000)/255;
+//new_voltage = 168;
+end  
+always @(clk_i)
+begin
+d_0 <= 5*d / 255;
+//d_0 <= 3;
+d_1 <= 50*((d-((d_0*255)/5)))/255; 
+//d_1 <= 2;
+d_2 <= 500*((d-(d-((d_0*255)/5))-(d-((d_1*255)/50))))/255;
+//d_2 <= 9;
+//d_3 <= new_voltage % 10;
+d_3 <= 0;
+end
+endmodule

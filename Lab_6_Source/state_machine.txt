@@ -1,0 +1,63 @@
+module State_machine_l6(
+input reset_n, clk_i,
+output reg dp,
+output reg [2:0] op_1
+); 
+reg[2:0]  state_n;
+reg[2:0] state;
+
+parameter S0 = 3'b000;
+parameter S1 = 3'b001; 
+parameter S2 = 3'b011;
+parameter S3 = 3'b100;
+always @(posedge clk_i, negedge reset_n) 
+	begin
+	if(~reset_n)
+		state = S0;
+	else state = state_n;
+	end
+	
+always @(*)
+begin
+case(state)
+	S0:
+		state_n <= S1;
+	S1:
+		state_n <= S2;
+
+	S2: 
+		state_n <= S3; 
+	S3: 
+		state_n <= S0;
+	default:
+	state_n <= S0;
+endcase
+end
+		
+
+always @(*)
+	begin
+if(state == S0)
+	begin
+		 op_1 <= 3'b000;
+		 dp <= 1'b1;
+		 end
+else if(state == S1)
+	begin
+		op_1 <= 3'b001;
+		dp <= 1'b1;
+		end
+else if(state == S2)
+	begin
+		op_1 <= 3'b011;
+		dp <= 1'b1;
+		end
+else if(state == S3)
+	begin
+		op_1 <= 3'b100;
+		dp <= 1'b0;
+		end
+		
+end
+	endmodule
+
